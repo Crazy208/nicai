@@ -1,4 +1,4 @@
-      var qrcode, userCookie,timeId;
+      var qrcode, userCookie,timeId,loginUrl;
       $(document).ready(function () {
         qrcode = new QRCode(document.getElementById('qrcode'), {
           text: 'sample',
@@ -35,7 +35,7 @@
                     '</div>',
                   text: userCookie,
                   icon: 'success',
-                  confirmButtonText: '谢谢',
+                  confirmButtonText: '谢谢！',
                 }).then((result) => {
                   copyToClip(userCookie);
                 });
@@ -55,6 +55,7 @@
               $('#refresh_qrcode').addClass('hidden');
 			  $('.landing').addClass('is-loading');
               qrcode.clear();
+              loginUrl = data.qrcode;
               qrcode.makeCode(data.qrcode);
               user = data.user;
               checkLogin(user);
@@ -98,9 +99,27 @@
 			clearInterval(timeId);
  
 			do_landing();
-		} 
-		
-		
+		}
+
+
+          document.getElementById('jumpapp').addEventListener('click', function () {
+              get_code();
+              if (loginUrl) {
+                  window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
+                      JSON.stringify({
+                          category: 'jump',
+                          des: 'ThirdPartyLogin',
+                          action: 'to',
+                          onekeylogin: 'return',
+                          url: loginUrl,
+                          authlogin_returnurl: 'weixin://',
+                          browserlogin_fromurl: window.location.host,
+                      })
+                  )}`;
+              } else {
+                  alert('还没加载好，请稍后重试');
+              }
+          });
  
 		
       });
