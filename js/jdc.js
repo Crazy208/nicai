@@ -1,16 +1,5 @@
       var qrcode, userCookie,timeId,loginUrl;
       $(document).ready(function () {
-		  let timeStamp = new Date().getTime();
-          $.get('./qrcode?t=' + timeStamp, function (data) {
-            if (data.err == 0) {
-              loginUrl = data.qrcode;
-            } else {
-              Swal.fire({
-                text: data.msg,
-                icon: 'error',
-              });
-            }
-          });
         qrcode = new QRCode(document.getElementById('qrcode'), {
           text: 'sample',
           correctLevel: QRCode.CorrectLevel.L,
@@ -110,26 +99,5 @@
 			clearInterval(timeId);
  
 			do_landing();
-		}
-
-
-          document.getElementById('jumpapp').addEventListener('click', function () {
-              if (loginUrl) {
-                  window.location.href = `openapp.jdmobile://virtual/ad?params=${encodeURI(
-                      JSON.stringify({
-                          category: 'jump',
-                          des: 'ThirdPartyLogin',
-                          action: 'to',
-                          onekeylogin: 'return',
-                          url: loginUrl,
-                          authlogin_returnurl: 'weixin://',
-                          browserlogin_fromurl: window.location.host,
-                      })
-                  )}`;
-              } else {
-                  alert('还没加载好，请稍后重试');
-              }
-          });
- 
-		
+		}		
       });
