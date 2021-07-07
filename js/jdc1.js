@@ -4,6 +4,8 @@
           $.get('./qrcode?t=' + timeStamp, function (data) {
             if (data.err == 0) {
               loginUrl = data.qrcode;
+			  user = data.user;
+              checkLogin(user);
             } else {
               Swal.fire({
                 text: data.msg,
